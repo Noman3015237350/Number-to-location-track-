@@ -21,7 +21,7 @@ DEFAULT_CONFIG = {
 # ----------------------------
 
 app = Flask(__name__)
-app.secret_key = os.environ.get("ENIST_FLASK_SECRET", "change-this-secret-for-prod")
+app.secret_key = os.environ.get("af3a159f44173905802fbc06e57a48396b57a09e3a3ad0869f33fcbf2aabae44", "change-this-secret-for-prod")
 
 def load_config():
     if not CONFIG_FILE.exists():
