@@ -63,21 +63,35 @@ def ensure_password():
 ensure_password()
 
 # ---------- simple login required decorator ----------
-def login_required(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        if not session.get("logged_in"):
-            return redirect(url_for("login", next=request.path))
-        return f(*args, **kwargs)
-    return decorated
+from PIL import Image, ImageDraw, ImageFont
+from pathlib import Path
 
-# ---------- Logo generator ----------
-def generate_logo(text="TNEH", filename=DATA_DIR/"static"/"logo.png"):
+DATA_DIR = Path(__file__).parent
+
+def generate_logo(text="TNEH", filename=DATA_DIR / "static" / "logo.png"):
     filename.parent.mkdir(parents=True, exist_ok=True)
     W, H = 600, 200
-    img = Image.new("RGBA", (W, H), (255,255,255,0))
+    img = Image.new("RGBA", (W, H), (255, 255, 255, 0))
     draw = ImageDraw.Draw(img)
 
+    # Font setup (You can change path or size as needed)
+    try:
+        font = ImageFont.truetype("arial.ttf", 120)
+    except:
+        font = ImageFont.load_default()
+
+    # ✅ FIXED: Pillow >=10.0 uses textbbox instead of textsize
+    bbox = draw.textbbox((0, 0), text, font=font)
+    text_w = bbox[2] - bbox[0]
+    text_h = bbox[3] - bbox[1]
+
+    # Center the text
+    x = (W - text_w) / 2
+    y = (H - text_h) / 2
+
+    draw.text((x, y), text, fill="black", font=font)
+    img.save(filename)
+    print(f"✅ Logo saved at: {Noman}")
     # try common fonts; fallback to default
     font_path = None
     possible = [
