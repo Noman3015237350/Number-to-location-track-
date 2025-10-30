@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head><title>ENIST Dashboard</title></head>
+<body>
+  <img src="{{ logo_url }}" alt="logo" style="height:80px"/>
+  <h1>ENIST - Dashboard</h1>
+  <a href="{{ url_for('logout') }}">Logout</a> | <a href="{{ url_for('settings') }}">Settings</a>
+
+  <h3>Generate Logo</h3>
+  <form method="post" action="{{ url_for('generate_logo_route') }}">
+    <input name="logo_text" placeholder="Logo text (TNEH)" />
+    <button type="submit">Generate</button>
+  </form>
+  <a href="{{ url_for('download_logo') }}">Download current logo</a>
+
+  <hr/>
+  <h3>Phone Lookup</h3>
+  <form method="post">
+    <input name="phone" placeholder="+8801XXXXXXXXX or 008801XXX" />
+    <input name="ip" placeholder="Optional: IP for consent-based lookup" />
+    <button type="submit">Lookup</button>
+  </form>
+
+  {% if result %}
+    <h4>Result</h4>
+    <pre>{{ result | tojson(indent=2) }}</pre>
+    {% if result.coords %}
+      <h4>Map (coords)</h4>
+      <!-- If you have google_maps_api_key configured you can embed a map here -->
+      <div>
+        Latitude: {{ result.coords[0] }}, Longitude: {{ result.coords[1] }}
+        <br/>
+        <iframe width="600" height="350" src="https://maps.google.com/maps?q={{ result.coords[0] }},{{ result.coords[1] }}&z=6&output=embed"></iframe>
+      </div>
+    {% endif %}
+  {% endif %}
+</body>
+    </html>
