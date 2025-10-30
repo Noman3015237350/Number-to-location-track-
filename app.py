@@ -39,7 +39,7 @@ cfg = load_config()
 def ensure_password():
     if cfg.get("password_hash"):
         return
-    env_pw = os.environ.get("ENIST_ADMIN_PASSWORD")
+    env_pw = os.environ.get("Noman")
     if env_pw:
         cfg["password_hash"] = generate_password_hash(env_pw)
         save_config(cfg)
