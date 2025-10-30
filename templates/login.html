@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+<head><title>ENIST Login</title></head>
+<body>
+  <h2>ENIST - Login</h2>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for c, m in messages %}
+      <div class="flash {{c}}">{{ m }}</div>
+    {% endfor %}
+  {% endwith %}
+  <form method="post">
+    <input type="password" name="password" placeholder="Admin password"/>
+    <button type="submit">Login</button>
+  </form>
+</body>
+</html>
